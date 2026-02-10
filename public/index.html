@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Team HQ — The Hoover Home Team</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0f;
+      --bg-card: #12121a;
+      --bg-hover: #1a1a24;
+      --border: #2a2a3a;
+      --text: #e4e4e7;
+      --text-muted: #71717a;
+      --accent: #6366f1;
+      --accent-hover: #4f46e5;
+      --green: #22c55e;
+      --yellow: #eab308;
+      --red: #ef4444;
+      --blue: #3b82f6;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 280px 1fr 340px;
+      grid-template-rows: auto 1fr;
+      height: 100vh;
+    }
+
+    header {
+      grid-column: 1 / -1;
+      padding: 16px 24px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 18px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    header h1 span {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .header-status {
+      display: flex;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+
+    .status-dot.online { background: var(--green); }
+    .status-dot.away { background: var(--yellow); }
+    .status-dot.offline { background: var(--text-muted); }
+
+    /* Office View */
+    .office-panel {
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .panel-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .agent-card {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .agent-card:hover {
+      border-color: var(--border);
+    }
+
+    .agent-card.selected {
+      border-color: var(--accent);
+    }
+
+    .agent-avatar {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 12px;
+      display: block;
+      border: 3px solid var(--border);
+    }
+
+    .agent-card.online .agent-avatar {
+      border-color: var(--green);
+    }
+
+    .agent-name {
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .agent-role {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .agent-status {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Chat Panel */
+    .chat-panel {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .chat-header {
+      padding: 16px 20px;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-title {
+      font-weight: 600;
+    }
+
+    .chat-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .session-selector {
+      padding: 8px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+    }
+
+    .message {
+      margin-bottom: 16px;
+      max-width: 85%;
+    }
+
+    .message.user {
+      margin-left: auto;
+    }
+
+    .message-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      font-size: 12px;
+    }
+
+    .message-sender {
+      font-weight: 600;
+    }
+
+    .message-time {
+      color: var(--text-muted);
+    }
+
+    .message-content {
+      background: var(--bg-card);
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .message.user .message-content {
+      background: var(--accent);
+    }
+
+    .message-content code {
+      background: rgba(0,0,0,0.3);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+
+    /* Takeaways Panel */
+    .takeaways-panel {
+      background: var(--bg-card);
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .takeaways-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .takeaways-tabs {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .tab-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tab-btn:hover {
+      background: var(--bg-hover);
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: white;
+    }
+
+    .takeaways-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    .takeaway-item {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-left: 3px solid var(--accent);
+    }
+
+    .takeaway-item.action { border-left-color: var(--blue); }
+    .takeaway-item.insight { border-left-color: var(--yellow); }
+    .takeaway-item.decision { border-left-color: var(--green); }
+
+    .takeaway-type {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .takeaway-text {
+      font-size: 13px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .takeaway-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .takeaway-agent {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .takeaway-agent img {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+
+    .status-badge {
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+
+    .status-badge.pending { background: rgba(234, 179, 8, 0.2); color: var(--yellow); }
+    .status-badge.in-progress { background: rgba(59, 130, 246, 0.2); color: var(--blue); }
+    .status-badge.done { background: rgba(34, 197, 94, 0.2); color: var(--green); }
+    .status-badge.blocked { background: rgba(239, 68, 68, 0.2); color: var(--red); }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+    }
+
+    .empty-state h3 {
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .confidence-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .confidence-fill {
+      height: 100%;
+      background: var(--yellow);
+      border-radius: 2px;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <header>
+      <h1>
+        🏠 Team HQ
+        <span>The Hoover Home Team</span>
+      </h1>
+      <div class="header-status" id="headerStatus">
+        Loading...
+      </div>
+    </header>
+
+    <div class="office-panel">
+      <div class="panel-title">Team</div>
+      <div id="agentList">Loading agents...</div>
+    </div>
+
+    <div class="chat-panel">
+      <div class="chat-header">
+        <div>
+          <div class="chat-title" id="chatTitle">Select an agent</div>
+          <div class="chat-meta" id="chatMeta"></div>
+        </div>
+        <select class="session-selector" id="sessionSelector" style="display: none;">
+          <option value="">Select session...</option>
+        </select>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="empty-state">
+          <h3>No conversation selected</h3>
+          <p>Click an agent to view their chat history</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="takeaways-panel">
+      <div class="takeaways-header">
+        <div class="panel-title">Takeaways</div>
+        <div class="takeaways-tabs">
+          <button class="tab-btn active" data-filter="all">All</button>
+          <button class="tab-btn" data-filter="action">Actions</button>
+          <button class="tab-btn" data-filter="insight">Insights</button>
+          <button class="tab-btn" data-filter="decision">Decisions</button>
+        </div>
+      </div>
+      <div class="takeaways-list" id="takeawaysList">
+        <div class="empty-state">
+          <h3>No takeaways yet</h3>
+          <p>Action items and insights will appear here</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let agents = [];
+    let sessions = [];
+    let takeaways = [];
+    let selectedAgent = null;
+    let currentFilter = 'all';
+
+    const agentRoles = {
+      'main': 'Co-founder',
+      'ryan-chen': 'Software Engineer',
+      'billy-holland': 'Agent'
+    };
+
+    async function loadAgents() {
+      try {
+        const res = await fetch('/api/agents');
+        const data = await res.json();
+        agents = data.agents;
+        
+        // Load status for each agent
+        for (const agent of agents) {
+          try {
+            const statusRes = await fetch(`/api/agents/${agent.id}/status`);
+            const statusData = await statusRes.json();
+            agent.status = statusData.status;
+            agent.lastActivity = statusData.lastActivity;
+          } catch (e) {
+            agent.status = 'offline';
+          }
+        }
+        
+        renderAgents();
+        updateHeaderStatus();
+      } catch (err) {
+        console.error('Failed to load agents:', err);
+      }
+    }
+
+    async function loadSessions() {
+      try {
+        const res = await fetch('/api/sessions');
+        const data = await res.json();
+        sessions = data.sessions;
+      } catch (err) {
+        console.error('Failed to load sessions:', err);
+      }
+    }
+
+    async function loadTakeaways() {
+      try {
+        const res = await fetch('/api/takeaways');
+        const data = await res.json();
+        takeaways = data.takeaways;
+        renderTakeaways();
+      } catch (err) {
+        console.error('Failed to load takeaways:', err);
+      }
+    }
+
+    function renderAgents() {
+      const container = document.getElementById('agentList');
+      
+      // Filter to only show main and ryan-chen (William and Ryan)
+      const visibleAgents = agents.filter(a => a.id === 'main' || a.id === 'ryan-chen');
+      
+      container.innerHTML = visibleAgents.map(agent => {
+        const name = agent.id === 'main' ? 'William' : agent.name;
+        const avatarId = agent.id === 'main' ? 'william' : agent.id;
+        
+        return `
+          <div class="agent-card ${agent.status}" data-agent="${agent.id}" onclick="selectAgent('${agent.id}')">
+            <img class="agent-avatar" src="/avatars/${avatarId}.jpg" alt="${name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%232a2a3a%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%2371717a%22 font-size=%2240%22>${name[0]}</text></svg>'">
+            <div class="agent-name">${name}</div>
+            <div class="agent-role">${agentRoles[agent.id] || 'Agent'}</div>
+            <div class="agent-status">
+              <span class="status-dot ${agent.status}"></span>
+              ${agent.status === 'online' ? 'Active now' : 'Away'}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateHeaderStatus() {
+      const online = agents.filter(a => a.status === 'online').length;
+      const total = agents.filter(a => a.id === 'main' || a.id === 'ryan-chen').length;
+      
+      document.getElementById('headerStatus').innerHTML = `
+        <span class="status-dot online"></span> ${online}/${total} online
+      `;
+    }
+
+    async function selectAgent(agentId) {
+      selectedAgent = agentId;
+      
+      // Update selected state
+      document.querySelectorAll('.agent-card').forEach(c => c.classList.remove('selected'));
+      document.querySelector(`[data-agent="${agentId}"]`)?.classList.add('selected');
+      
+      const agent = agents.find(a => a.id === agentId);
+      const name = agentId === 'main' ? 'William' : agent?.name || agentId;
+      
+      document.getElementById('chatTitle').textContent = `${name}'s Conversations`;
+      
+      // Filter sessions for this agent
+      const agentSessions = sessions.filter(s => s.agentId === agentId);
+      
+      const selector = document.getElementById('sessionSelector');
+      selector.style.display = 'block';
+      selector.innerHTML = `
+        <option value="">Select session...</option>
+        ${agentSessions.map(s => {
+          const date = new Date(s.lastActivity).toLocaleDateString();
+          return `<option value="${s.id}">${s.id.slice(0, 8)}... (${s.messageCount} msgs, ${date})</option>`;
+        }).join('')}
+      `;
+      
+      // Auto-select most recent session
+      if (agentSessions.length > 0) {
+        selector.value = agentSessions[0].id;
+        loadSession(agentId, agentSessions[0].id);
+      }
+    }
+
+    async function loadSession(agentId, sessionId) {
+      try {
+        const res = await fetch(`/api/sessions/${agentId}/${sessionId}`);
+        const data = await res.json();
+        
+        document.getElementById('chatMeta').textContent = `${data.messages.length} messages`;
+        
+        renderMessages(data.messages, agentId);
+      } catch (err) {
+        console.error('Failed to load session:', err);
+      }
+    }
+
+    function renderMessages(messages, agentId) {
+      const container = document.getElementById('chatMessages');
+      
+      if (messages.length === 0) {
+        container.innerHTML = '<div class="empty-state"><h3>No messages</h3></div>';
+        return;
+      }
+      
+      const agentName = agentId === 'main' ? 'William' : 'Ryan';
+      
+      container.innerHTML = messages.slice(-50).map(msg => {
+        const isUser = msg.role === 'user';
+        const sender = isUser ? 'User' : agentName;
+        const time = msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString() : '';
+        
+        // Truncate long messages
+        let content = msg.content || '';
+        if (content.length > 1000) {
+          content = content.slice(0, 1000) + '...';
+        }
+        
+        return `
+          <div class="message ${isUser ? 'user' : 'assistant'}">
+            <div class="message-header">
+              <span class="message-sender">${sender}</span>
+              <span class="message-time">${time}</span>
+            </div>
+            <div class="message-content">${escapeHtml(content)}</div>
+          </div>
+        `;
+      }).join('');
+      
+      // Scroll to bottom
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function renderTakeaways() {
+      const container = document.getElementById('takeawaysList');
+      
+      let filtered = takeaways;
+      if (currentFilter !== 'all') {
+        filtered = takeaways.filter(t => t.type === currentFilter);
+      }
+      
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h3>No ${currentFilter === 'all' ? 'takeaways' : currentFilter + 's'} yet</h3>
+            <p>Items will appear as agents add them</p>
+          </div>
+        `;
+        return;
+      }
+      
+      container.innerHTML = filtered.map(t => {
+        const agentName = t.agent === 'main' || t.agent === 'william' ? 'William' : 'Ryan';
+        const avatarId = t.agent === 'main' || t.agent === 'william' ? 'william' : 'ryan';
+        const time = new Date(t.createdAt).toLocaleDateString();
+        
+        let confidenceBar = '';
+        if (t.type === 'insight' && t.confidence) {
+          confidenceBar = `
+            <div class="confidence-bar">
+              <div class="confidence-fill" style="width: ${t.confidence * 100}%"></div>
+            </div>
+          `;
+        }
+        
+        return `
+          <div class="takeaway-item ${t.type}">
+            <div class="takeaway-type">${t.type}</div>
+            <div class="takeaway-text">${escapeHtml(t.text)}</div>
+            ${confidenceBar}
+            <div class="takeaway-meta">
+              <div class="takeaway-agent">
+                <img src="/avatars/${avatarId}.jpg" alt="${agentName}" onerror="this.style.display='none'">
+                ${agentName} · ${time}
+              </div>
+              ${t.status ? `<span class="status-badge ${t.status}">${t.status}</span>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Tab handling
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderTakeaways();
+      });
+    });
+
+    // Session selector
+    document.getElementById('sessionSelector').addEventListener('change', (e) => {
+      if (e.target.value && selectedAgent) {
+        loadSession(selectedAgent, e.target.value);
+      }
+    });
+
+    // Auto-refresh
+    setInterval(() => {
+      loadAgents();
+      loadTakeaways();
+    }, 30000);
+
+    // Initialize
+    Promise.all([loadAgents(), loadSessions(), loadTakeaways()]);
+  </script>
+</body>
+</html>

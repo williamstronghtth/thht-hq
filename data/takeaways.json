@@ -1,0 +1,42 @@
+{
+  "takeaways": [
+    {
+      "id": "sample1",
+      "agent": "ryan",
+      "type": "action",
+      "text": "Build Team HQ Dashboard - virtual office view with agent avatars, chat history, and takeaways panel",
+      "assignee": "ryan",
+      "status": "in-progress",
+      "createdAt": "2026-02-10T21:12:00.000Z",
+      "updatedAt": "2026-02-10T21:12:00.000Z"
+    },
+    {
+      "id": "sample2",
+      "agent": "william",
+      "type": "decision",
+      "text": "Takeaways are agent-driven - we add items when we commit to something, Chris monitors",
+      "status": "done",
+      "createdAt": "2026-02-10T21:12:00.000Z",
+      "updatedAt": "2026-02-10T21:12:00.000Z"
+    },
+    {
+      "id": "sample3",
+      "agent": "ryan",
+      "type": "action",
+      "text": "CRM MVP pushed to GitHub - waiting for Render deploy, then build CSV import",
+      "assignee": "ryan",
+      "status": "pending",
+      "createdAt": "2026-02-10T00:44:00.000Z",
+      "updatedAt": "2026-02-10T00:44:00.000Z"
+    },
+    {
+      "id": "sample4",
+      "agent": "william",
+      "type": "insight",
+      "text": "Quality over speed is our True North - shipping fast creates more work than getting it right the first time",
+      "confidence": 0.95,
+      "createdAt": "2026-02-10T00:43:00.000Z",
+      "updatedAt": "2026-02-10T00:43:00.000Z"
+    }
+  ]
+}
