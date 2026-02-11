@@ -36,7 +36,7 @@
 
     .dashboard {
       display: grid;
-      grid-template-columns: 1fr 420px;
+      grid-template-columns: 320px 1fr 340px;
       grid-template-rows: auto 1fr;
       height: 100vh;
     }
@@ -265,7 +265,16 @@
     .plant.plant-2 { bottom: 20px; left: 20px; }
     .plant.plant-3 { top: 50%; right: 20px; transform: translateY(-50%); }
 
-    /* Right sidebar with chat + takeaways */
+    /* Left sidebar - Live Chat */
+    .left-sidebar {
+      background: var(--bg-card);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Right sidebar - Takeaways */
     .right-sidebar {
       background: var(--bg-card);
       border-left: 1px solid var(--border);
@@ -287,7 +296,6 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      border-bottom: 1px solid var(--border);
       min-height: 0;
     }
 
@@ -534,6 +542,26 @@
       </div>
     </header>
 
+    <!-- LEFT: Live Chat -->
+    <div class="left-sidebar">
+      <div class="chat-feed">
+        <div class="chat-feed-header">
+          <span class="panel-title">Live Chat</span>
+          <div class="live-indicator">
+            <div class="live-dot"></div>
+            LIVE
+          </div>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="empty-state">
+            <h3>No messages yet</h3>
+            <p>Conversations will appear here</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER: Virtual Office -->
     <div class="office-container">
       <div class="office-floor">
         <div class="desk desk-1">
@@ -572,23 +600,8 @@
       </div>
     </div>
 
+    <!-- RIGHT: Takeaways -->
     <div class="right-sidebar">
-      <div class="chat-feed">
-        <div class="chat-feed-header">
-          <span class="panel-title">Live Chat</span>
-          <div class="live-indicator">
-            <div class="live-dot"></div>
-            LIVE
-          </div>
-        </div>
-        <div class="chat-messages" id="chatMessages">
-          <div class="empty-state">
-            <h3>No messages yet</h3>
-            <p>Conversations will appear here</p>
-          </div>
-        </div>
-      </div>
-
       <div class="takeaways-panel">
         <div class="takeaways-header">
           <div class="panel-title">Takeaways</div>
