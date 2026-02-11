@@ -282,6 +282,61 @@ app.get('/api/agents/:id/status', (req, res) => {
   }
 });
 
+// Chat log file for live feed
+const CHATLOG_FILE = path.join(__dirname, 'data', 'chatlog.json');
+
+function loadChatlog() {
+  if (!fs.existsSync(CHATLOG_FILE)) {
+    const initial = { messages: [] };
+    fs.writeFileSync(CHATLOG_FILE, JSON.stringify(initial, null, 2));
+    return initial;
+  }
+  return JSON.parse(fs.readFileSync(CHATLOG_FILE, 'utf8'));
+}
+
+function saveChatlog(data) {
+  fs.writeFileSync(CHATLOG_FILE, JSON.stringify(data, null, 2));
+}
+
+// GET chat log (recent messages)
+app.get('/api/chatlog', (req, res) => {
+  try {
+    const data = loadChatlog();
+    // Return last 50 messages
+    const messages = data.messages.slice(-50);
+    res.json({ messages });
+  } catch (err) {
+    res.json({ messages: [] });
+  }
+});
+
+// POST new chat message (agents call this to log conversations)
+app.post('/api/chatlog', (req, res) => {
+  try {
+    const data = loadChatlog();
+    
+    const message = {
+      id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+      from: req.body.from || 'unknown',
+      to: req.body.to || 'unknown',
+      text: req.body.text || '',
+      timestamp: new Date().toISOString()
+    };
+    
+    data.messages.push(message);
+    
+    // Keep only last 200 messages
+    if (data.messages.length > 200) {
+      data.messages = data.messages.slice(-200);
+    }
+    
+    saveChatlog(data);
+    res.status(201).json(message);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to log message', details: err.message });
+  }
+});
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`THHT HQ Dashboard running on port ${PORT}`);
 });

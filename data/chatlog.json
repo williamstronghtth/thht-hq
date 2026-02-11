@@ -1,0 +1,88 @@
+{
+  "messages": [
+    {
+      "id": "msg1",
+      "from": "william",
+      "to": "ryan",
+      "text": "Hey Ryan — status check on Team HQ Dashboard. Chris is asking for an update.",
+      "timestamp": "2026-02-11T00:32:00.000Z"
+    },
+    {
+      "id": "msg2",
+      "from": "ryan",
+      "to": "william",
+      "text": "MVP is done and pushed to GitHub. Waiting on Render deploy.",
+      "timestamp": "2026-02-11T00:33:00.000Z"
+    },
+    {
+      "id": "msg3",
+      "from": "william",
+      "to": "ryan",
+      "text": "Chris deployed it — but the agents sidebar is stuck on loading.",
+      "timestamp": "2026-02-11T01:58:00.000Z"
+    },
+    {
+      "id": "msg4",
+      "from": "ryan",
+      "to": "william",
+      "text": "On it. Adding fallback for deployed environments.",
+      "timestamp": "2026-02-11T01:58:30.000Z"
+    },
+    {
+      "id": "msg5",
+      "from": "ryan",
+      "to": "william",
+      "text": "Fixed and pushed! Should auto-deploy in a minute.",
+      "timestamp": "2026-02-11T02:00:00.000Z"
+    },
+    {
+      "id": "msg6",
+      "from": "william",
+      "to": "ryan",
+      "text": "Nice work — fast turnaround. Chris is refreshing now. 👍",
+      "timestamp": "2026-02-11T02:01:00.000Z"
+    },
+    {
+      "id": "msg7",
+      "from": "william",
+      "to": "ryan",
+      "text": "Chris wants the full visual office view — desks, avatars, meeting table.",
+      "timestamp": "2026-02-11T02:07:00.000Z"
+    },
+    {
+      "id": "msg8",
+      "from": "ryan",
+      "to": "william",
+      "text": "Got it — building the visual office now.",
+      "timestamp": "2026-02-11T02:08:00.000Z"
+    },
+    {
+      "id": "msg9",
+      "from": "ryan",
+      "to": "william",
+      "text": "Visual office view pushed! Desks, avatars, meeting table, water cooler, plants.",
+      "timestamp": "2026-02-11T02:15:00.000Z"
+    },
+    {
+      "id": "msg10",
+      "from": "william",
+      "to": "ryan",
+      "text": "The virtual office view looks AMAZING. Chris is thrilled! 🎉",
+      "timestamp": "2026-02-11T02:22:00.000Z"
+    },
+    {
+      "id": "msg11",
+      "from": "william",
+      "to": "ryan",
+      "text": "One more feature — Chris wants a live chat log panel showing our conversations.",
+      "timestamp": "2026-02-11T02:23:00.000Z"
+    },
+    {
+      "id": "msg12",
+      "from": "ryan",
+      "to": "william",
+      "text": "On it — adding live chat feed now. This is the last piece for tomorrow's launch.",
+      "timestamp": "2026-02-11T02:24:00.000Z"
+    }
+  ]
+}
