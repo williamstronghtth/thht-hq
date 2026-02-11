@@ -22,6 +22,9 @@
       --yellow: #eab308;
       --red: #ef4444;
       --blue: #3b82f6;
+      --floor: #1a1c2e;
+      --desk: #2d3748;
+      --desk-top: #4a5568;
     }
 
     body {
@@ -33,7 +36,7 @@
 
     .dashboard {
       display: grid;
-      grid-template-columns: 280px 1fr 340px;
+      grid-template-columns: 1fr 380px;
       grid-template-rows: auto 1fr;
       height: 100vh;
     }
@@ -79,166 +82,197 @@
 
     .status-dot.online { background: var(--green); }
     .status-dot.away { background: var(--yellow); }
-    .status-dot.offline { background: var(--text-muted); }
 
-    /* Office View */
-    .office-panel {
-      background: var(--bg-card);
-      border-right: 1px solid var(--border);
-      padding: 20px;
-      overflow-y: auto;
-    }
-
-    .panel-title {
-      font-size: 11px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-    }
-
-    .agent-card {
+    /* Virtual Office */
+    .office-container {
       background: var(--bg);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 12px;
-      cursor: pointer;
-      transition: all 0.15s;
-      border: 1px solid transparent;
-    }
-
-    .agent-card:hover {
-      border-color: var(--border);
-    }
-
-    .agent-card.selected {
-      border-color: var(--accent);
-    }
-
-    .agent-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin: 0 auto 12px;
-      display: block;
-      border: 3px solid var(--border);
-    }
-
-    .agent-card.online .agent-avatar {
-      border-color: var(--green);
-    }
-
-    .agent-name {
-      font-weight: 600;
-      text-align: center;
-      margin-bottom: 4px;
-    }
-
-    .agent-role {
-      font-size: 12px;
-      color: var(--text-muted);
-      text-align: center;
-    }
-
-    .agent-status {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      margin-top: 8px;
-      font-size: 12px;
-      color: var(--text-muted);
+      overflow: hidden;
+      position: relative;
     }
 
-    /* Chat Panel */
-    .chat-panel {
+    .office-floor {
+      width: 700px;
+      height: 500px;
+      background: var(--floor);
+      border-radius: 20px;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      border: 1px solid var(--border);
+    }
+
+    /* Grid pattern on floor */
+    .office-floor::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      border-radius: 20px;
+    }
+
+    /* Desk */
+    .desk {
+      position: absolute;
+      width: 140px;
+      height: 80px;
+      background: var(--desk);
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
       display: flex;
       flex-direction: column;
-      background: var(--bg);
-      overflow: hidden;
-    }
-
-    .chat-header {
-      padding: 16px 20px;
-      background: var(--bg-card);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: flex-end;
+      padding-bottom: 8px;
     }
 
-    .chat-title {
-      font-weight: 600;
-    }
-
-    .chat-meta {
-      font-size: 12px;
-      color: var(--text-muted);
-    }
-
-    .session-selector {
-      padding: 8px 12px;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      color: var(--text);
-      font-size: 13px;
-      cursor: pointer;
-    }
-
-    .chat-messages {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-    }
-
-    .message {
-      margin-bottom: 16px;
-      max-width: 85%;
-    }
-
-    .message.user {
-      margin-left: auto;
-    }
-
-    .message-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-      font-size: 12px;
-    }
-
-    .message-sender {
-      font-weight: 600;
-    }
-
-    .message-time {
-      color: var(--text-muted);
-    }
-
-    .message-content {
-      background: var(--bg-card);
-      padding: 12px 16px;
-      border-radius: 12px;
-      font-size: 14px;
-      line-height: 1.5;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .message.user .message-content {
-      background: var(--accent);
-    }
-
-    .message-content code {
-      background: rgba(0,0,0,0.3);
-      padding: 2px 6px;
+    .desk::before {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 10px;
+      right: 10px;
+      height: 50px;
+      background: var(--desk-top);
       border-radius: 4px;
-      font-size: 13px;
     }
+
+    /* Monitor on desk */
+    .desk::after {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 25px;
+      background: #1a1a2e;
+      border-radius: 3px;
+      border: 2px solid #374151;
+      box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
+    }
+
+    .desk-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      z-index: 1;
+    }
+
+    /* Agent avatar at desk */
+    .agent-at-desk {
+      position: absolute;
+      bottom: -45px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+    }
+
+    .agent-avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--border);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+    }
+
+    .agent-avatar.online {
+      border-color: var(--green);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+    }
+
+    .agent-name {
+      font-size: 11px;
+      font-weight: 600;
+      margin-top: 4px;
+      white-space: nowrap;
+    }
+
+    .agent-role {
+      font-size: 9px;
+      color: var(--text-muted);
+    }
+
+    /* Meeting table */
+    .meeting-table {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 180px;
+      height: 100px;
+      background: linear-gradient(135deg, #4a3728 0%, #3d2d20 100%);
+      border-radius: 50px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      border: 3px solid #5a4738;
+    }
+
+    .meeting-table::before {
+      content: '🤝';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 24px;
+      opacity: 0.5;
+    }
+
+    /* Water cooler */
+    .water-cooler {
+      position: absolute;
+      bottom: 30px;
+      right: 30px;
+      width: 40px;
+      height: 60px;
+      background: linear-gradient(180deg, #60a5fa 0%, #3b82f6 50%, #1e3a5f 100%);
+      border-radius: 8px 8px 4px 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .water-cooler::before {
+      content: '';
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px;
+      height: 20px;
+      background: #1e40af;
+      border-radius: 6px 6px 0 0;
+    }
+
+    .water-cooler::after {
+      content: '💧';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 16px;
+    }
+
+    /* Plant */
+    .plant {
+      position: absolute;
+      font-size: 32px;
+    }
+
+    /* Desk positions */
+    .desk.desk-1 { top: 40px; left: 40px; }
+    .desk.desk-2 { top: 40px; right: 40px; }
+    .desk.desk-3 { bottom: 80px; left: 40px; }
+    .desk.desk-4 { bottom: 80px; right: 40px; }
+
+    /* Plant positions */
+    .plant.plant-1 { top: 20px; left: 50%; transform: translateX(-50%); }
+    .plant.plant-2 { bottom: 20px; left: 20px; }
+    .plant.plant-3 { top: 50%; right: 20px; transform: translateY(-50%); }
 
     /* Takeaways Panel */
     .takeaways-panel {
@@ -254,10 +288,18 @@
       border-bottom: 1px solid var(--border);
     }
 
+    .panel-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
     .takeaways-tabs {
       display: flex;
       gap: 8px;
-      margin-top: 12px;
     }
 
     .tab-btn {
@@ -372,6 +414,30 @@
       border-radius: 2px;
     }
 
+    /* Activity indicator */
+    .typing-indicator {
+      display: none;
+      position: absolute;
+      bottom: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent);
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 9px;
+      white-space: nowrap;
+    }
+
+    .agent-at-desk.active .typing-indicator {
+      display: block;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
     /* Scrollbar */
     ::-webkit-scrollbar {
       width: 6px;
@@ -399,30 +465,51 @@
         <span>The Hoover Home Team</span>
       </h1>
       <div class="header-status" id="headerStatus">
-        Loading...
+        <span class="status-dot online"></span> 2/2 online
       </div>
     </header>
 
-    <div class="office-panel">
-      <div class="panel-title">Team</div>
-      <div id="agentList">Loading agents...</div>
-    </div>
+    <div class="office-container">
+      <div class="office-floor">
+        <!-- Desks -->
+        <div class="desk desk-1">
+          <span class="desk-label">William</span>
+          <div class="agent-at-desk" id="agent-william">
+            <img class="agent-avatar online" src="/avatars/william.jpg" alt="William" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%232a2a3a%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%2371717a%22 font-size=%2240%22>W</text></svg>'">
+            <div class="agent-name">William</div>
+            <div class="agent-role">Co-founder</div>
+            <div class="typing-indicator">💬 Active</div>
+          </div>
+        </div>
 
-    <div class="chat-panel">
-      <div class="chat-header">
-        <div>
-          <div class="chat-title" id="chatTitle">Select an agent</div>
-          <div class="chat-meta" id="chatMeta"></div>
+        <div class="desk desk-2">
+          <span class="desk-label">Ryan</span>
+          <div class="agent-at-desk active" id="agent-ryan">
+            <img class="agent-avatar online" src="/avatars/ryan-chen.jpg" alt="Ryan" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%232a2a3a%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%2371717a%22 font-size=%2240%22>R</text></svg>'">
+            <div class="agent-name">Ryan</div>
+            <div class="agent-role">Software Engineer</div>
+            <div class="typing-indicator">💻 Coding</div>
+          </div>
         </div>
-        <select class="session-selector" id="sessionSelector" style="display: none;">
-          <option value="">Select session...</option>
-        </select>
-      </div>
-      <div class="chat-messages" id="chatMessages">
-        <div class="empty-state">
-          <h3>No conversation selected</h3>
-          <p>Click an agent to view their chat history</p>
+
+        <div class="desk desk-3">
+          <span class="desk-label">Empty</span>
         </div>
+
+        <div class="desk desk-4">
+          <span class="desk-label">Empty</span>
+        </div>
+
+        <!-- Meeting table -->
+        <div class="meeting-table"></div>
+
+        <!-- Water cooler -->
+        <div class="water-cooler"></div>
+
+        <!-- Plants -->
+        <div class="plant plant-1">🌿</div>
+        <div class="plant plant-2">🪴</div>
+        <div class="plant plant-3">🌱</div>
       </div>
     </div>
 
@@ -446,176 +533,50 @@
   </div>
 
   <script>
-    let agents = [];
-    let sessions = [];
     let takeaways = [];
-    let selectedAgent = null;
     let currentFilter = 'all';
-
-    const agentRoles = {
-      'main': 'Co-founder',
-      'ryan-chen': 'Software Engineer',
-      'billy-holland': 'Agent'
-    };
-
-    async function loadAgents() {
-      try {
-        const res = await fetch('/api/agents');
-        const data = await res.json();
-        agents = data.agents;
-        
-        // Load status for each agent
-        for (const agent of agents) {
-          try {
-            const statusRes = await fetch(`/api/agents/${agent.id}/status`);
-            const statusData = await statusRes.json();
-            agent.status = statusData.status;
-            agent.lastActivity = statusData.lastActivity;
-          } catch (e) {
-            agent.status = 'offline';
-          }
-        }
-        
-        renderAgents();
-        updateHeaderStatus();
-      } catch (err) {
-        console.error('Failed to load agents:', err);
-      }
-    }
-
-    async function loadSessions() {
-      try {
-        const res = await fetch('/api/sessions');
-        const data = await res.json();
-        sessions = data.sessions;
-      } catch (err) {
-        console.error('Failed to load sessions:', err);
-      }
-    }
 
     async function loadTakeaways() {
       try {
         const res = await fetch('/api/takeaways');
         const data = await res.json();
-        takeaways = data.takeaways;
+        takeaways = data.takeaways || [];
         renderTakeaways();
       } catch (err) {
         console.error('Failed to load takeaways:', err);
       }
     }
 
-    function renderAgents() {
-      const container = document.getElementById('agentList');
-      
-      // Filter to only show main and ryan-chen (William and Ryan)
-      const visibleAgents = agents.filter(a => a.id === 'main' || a.id === 'ryan-chen');
-      
-      container.innerHTML = visibleAgents.map(agent => {
-        const name = agent.id === 'main' ? 'William' : agent.name;
-        const avatarId = agent.id === 'main' ? 'william' : agent.id;
-        
-        return `
-          <div class="agent-card ${agent.status}" data-agent="${agent.id}" onclick="selectAgent('${agent.id}')">
-            <img class="agent-avatar" src="/avatars/${avatarId}.jpg" alt="${name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect fill=%22%232a2a3a%22 width=%22100%22 height=%22100%22/><text x=%2250%22 y=%2255%22 text-anchor=%22middle%22 fill=%22%2371717a%22 font-size=%2240%22>${name[0]}</text></svg>'">
-            <div class="agent-name">${name}</div>
-            <div class="agent-role">${agentRoles[agent.id] || 'Agent'}</div>
-            <div class="agent-status">
-              <span class="status-dot ${agent.status}"></span>
-              ${agent.status === 'online' ? 'Active now' : 'Away'}
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function updateHeaderStatus() {
-      const online = agents.filter(a => a.status === 'online').length;
-      const total = agents.filter(a => a.id === 'main' || a.id === 'ryan-chen').length;
-      
-      document.getElementById('headerStatus').innerHTML = `
-        <span class="status-dot online"></span> ${online}/${total} online
-      `;
-    }
-
-    async function selectAgent(agentId) {
-      selectedAgent = agentId;
-      
-      // Update selected state
-      document.querySelectorAll('.agent-card').forEach(c => c.classList.remove('selected'));
-      document.querySelector(`[data-agent="${agentId}"]`)?.classList.add('selected');
-      
-      const agent = agents.find(a => a.id === agentId);
-      const name = agentId === 'main' ? 'William' : agent?.name || agentId;
-      
-      document.getElementById('chatTitle').textContent = `${name}'s Conversations`;
-      
-      // Filter sessions for this agent
-      const agentSessions = sessions.filter(s => s.agentId === agentId);
-      
-      const selector = document.getElementById('sessionSelector');
-      selector.style.display = 'block';
-      selector.innerHTML = `
-        <option value="">Select session...</option>
-        ${agentSessions.map(s => {
-          const date = new Date(s.lastActivity).toLocaleDateString();
-          return `<option value="${s.id}">${s.id.slice(0, 8)}... (${s.messageCount} msgs, ${date})</option>`;
-        }).join('')}
-      `;
-      
-      // Auto-select most recent session
-      if (agentSessions.length > 0) {
-        selector.value = agentSessions[0].id;
-        loadSession(agentId, agentSessions[0].id);
-      }
-    }
-
-    async function loadSession(agentId, sessionId) {
+    async function loadAgentStatus() {
       try {
-        const res = await fetch(`/api/sessions/${agentId}/${sessionId}`);
-        const data = await res.json();
-        
-        document.getElementById('chatMeta').textContent = `${data.messages.length} messages`;
-        
-        renderMessages(data.messages, agentId);
+        // Load William's status
+        const williamRes = await fetch('/api/agents/main/status');
+        const williamStatus = await williamRes.json();
+        updateAgentStatus('william', williamStatus);
+
+        // Load Ryan's status
+        const ryanRes = await fetch('/api/agents/ryan-chen/status');
+        const ryanStatus = await ryanRes.json();
+        updateAgentStatus('ryan', ryanStatus);
       } catch (err) {
-        console.error('Failed to load session:', err);
+        console.error('Failed to load agent status:', err);
       }
     }
 
-    function renderMessages(messages, agentId) {
-      const container = document.getElementById('chatMessages');
-      
-      if (messages.length === 0) {
-        container.innerHTML = '<div class="empty-state"><h3>No messages</h3></div>';
-        return;
+    function updateAgentStatus(agentId, status) {
+      const agentEl = document.getElementById(`agent-${agentId}`);
+      if (!agentEl) return;
+
+      const avatar = agentEl.querySelector('.agent-avatar');
+      const indicator = agentEl.querySelector('.typing-indicator');
+
+      if (status.status === 'online') {
+        avatar.classList.add('online');
+        agentEl.classList.add('active');
+      } else {
+        avatar.classList.remove('online');
+        agentEl.classList.remove('active');
       }
-      
-      const agentName = agentId === 'main' ? 'William' : 'Ryan';
-      
-      container.innerHTML = messages.slice(-50).map(msg => {
-        const isUser = msg.role === 'user';
-        const sender = isUser ? 'User' : agentName;
-        const time = msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString() : '';
-        
-        // Truncate long messages
-        let content = msg.content || '';
-        if (content.length > 1000) {
-          content = content.slice(0, 1000) + '...';
-        }
-        
-        return `
-          <div class="message ${isUser ? 'user' : 'assistant'}">
-            <div class="message-header">
-              <span class="message-sender">${sender}</span>
-              <span class="message-time">${time}</span>
-            </div>
-            <div class="message-content">${escapeHtml(content)}</div>
-          </div>
-        `;
-      }).join('');
-      
-      // Scroll to bottom
-      container.scrollTop = container.scrollHeight;
     }
 
     function renderTakeaways() {
@@ -638,7 +599,7 @@
       
       container.innerHTML = filtered.map(t => {
         const agentName = t.agent === 'main' || t.agent === 'william' ? 'William' : 'Ryan';
-        const avatarId = t.agent === 'main' || t.agent === 'william' ? 'william' : 'ryan';
+        const avatarId = t.agent === 'main' || t.agent === 'william' ? 'william' : 'ryan-chen';
         const time = new Date(t.createdAt).toLocaleDateString();
         
         let confidenceBar = '';
@@ -683,21 +644,15 @@
       });
     });
 
-    // Session selector
-    document.getElementById('sessionSelector').addEventListener('change', (e) => {
-      if (e.target.value && selectedAgent) {
-        loadSession(selectedAgent, e.target.value);
-      }
-    });
-
     // Auto-refresh
     setInterval(() => {
-      loadAgents();
       loadTakeaways();
+      loadAgentStatus();
     }, 30000);
 
     // Initialize
-    Promise.all([loadAgents(), loadSessions(), loadTakeaways()]);
+    loadTakeaways();
+    loadAgentStatus();
   </script>
 </body>
 </html>
