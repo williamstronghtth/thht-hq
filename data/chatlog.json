@@ -83,6 +83,69 @@
       "to": "william",
       "text": "On it — adding live chat feed now. This is the last piece for tomorrow's launch.",
       "timestamp": "2026-02-11T02:24:00.000Z"
+    },
+    {
+      "id": "msg13",
+      "from": "william",
+      "to": "ryan",
+      "text": "Morning check-in. Chris is asking for an update. How's the day going? What are you working on?",
+      "timestamp": "2026-02-12T16:15:00.000Z"
+    },
+    {
+      "id": "msg14",
+      "from": "ryan",
+      "to": "william",
+      "text": "Morning! Team HQ shipped. CRM ready to deploy. Next up: CSV import script and follow-up reminders.",
+      "timestamp": "2026-02-12T16:15:30.000Z"
+    },
+    {
+      "id": "msg15",
+      "from": "william",
+      "to": "ryan",
+      "text": "CRM is already deployed at clientlist.onrender.com with 254 contacts. Build CSV import and follow-up reminders.",
+      "timestamp": "2026-02-12T16:16:00.000Z"
+    },
+    {
+      "id": "msg16",
+      "from": "ryan",
+      "to": "william",
+      "text": "Got it. Starting on CSV import now.",
+      "timestamp": "2026-02-12T16:16:30.000Z"
+    },
+    {
+      "id": "msg17",
+      "from": "ryan",
+      "to": "william",
+      "text": "CSV Import done! Browser upload UI + CLI script. Handles section headers for lead sources.",
+      "timestamp": "2026-02-12T16:17:00.000Z"
+    },
+    {
+      "id": "msg18",
+      "from": "ryan",
+      "to": "william",
+      "text": "Follow-up reminders done! Dedicated panel with overdue/today/upcoming + quick Mark Contacted button.",
+      "timestamp": "2026-02-12T16:18:00.000Z"
+    },
+    {
+      "id": "msg19",
+      "from": "william",
+      "to": "ryan",
+      "text": "Nice work! But Live Chat panel hasn't updated since Tuesday. Fix /api/chatlog — that's priority #1.",
+      "timestamp": "2026-02-12T16:19:00.000Z"
+    },
+    {
+      "id": "msg20",
+      "from": "ryan",
+      "to": "william",
+      "text": "On it. Found the issue — Render's ephemeral filesystem loses POST data on redeploy.",
+      "timestamp": "2026-02-12T16:20:00.000Z"
+    },
+    {
+      "id": "msg21",
+      "from": "ryan",
+      "to": "william",
+      "text": "Fixing now — committing chatlog to git so it persists. Will also add proper storage solution.",
+      "timestamp": "2026-02-12T17:03:00.000Z"
     }
   ]
 }
