@@ -299,10 +299,25 @@ function saveChatlog(data) {
 }
 
 // GET chat log (recent messages)
-app.get('/api/chatlog', (req, res) => {
+// Try GitHub first (persistent), fallback to local file
+app.get('/api/chatlog', async (req, res) => {
+  try {
+    // Try fetching from GitHub raw (cache-bust with timestamp)
+    const githubUrl = 'https://raw.githubusercontent.com/williamstronghtth/thht-hq/main/data/chatlog.json';
+    const response = await fetch(githubUrl + '?t=' + Date.now());
+    
+    if (response.ok) {
+      const data = await response.json();
+      const messages = data.messages.slice(-50);
+      return res.json({ messages });
+    }
+  } catch (err) {
+    console.log('GitHub fetch failed, using local:', err.message);
+  }
+  
+  // Fallback to local file
   try {
     const data = loadChatlog();
-    // Return last 50 messages
     const messages = data.messages.slice(-50);
     res.json({ messages });
   } catch (err) {
